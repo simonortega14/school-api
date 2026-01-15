@@ -2,6 +2,8 @@
 
 Aplicación web Full Stack para gestionar alumnos, materias y notas académicas.
 
+> ** Nota sobre la estructura**: Este es un proyecto monorepo donde el **backend** (Java/Spring Boot) está en la raíz del proyecto (`src/`, `pom.xml`) y el **frontend** (React/TypeScript) está en la carpeta `frontend/`. Ambos se despliegan juntos usando Docker Compose.
+
 ---
 
 ## Tecnologías
@@ -33,6 +35,34 @@ El proyecto está dividido en tres servicios principales:
 3. **Frontend** - Aplicación React (puerto 80)
 
 Todos los servicios se comunican a través de una red Docker (`school_network`).
+
+---
+
+---
+
+## Estructura del Proyecto
+```
+school-api-main/
+├── src/                          #  Código fuente del Backend (Java/Spring Boot)
+│   └── main/
+│       ├── java/
+│       └── resources/
+├── frontend/                     #  Código fuente del Frontend (React/TypeScript)
+│   ├── src/
+│   ├── public/
+│   ├── Dockerfile
+│   └── package.json
+├── db/                           #  Datos de prueba
+│   ├── school_db.dump
+│   └── README.md
+├── target/                       #  Compilados del Backend (generado)
+├── docker-compose.yml            #  Orquestación de servicios
+├── Dockerfile                    #  Imagen del Backend
+├── pom.xml                       #  Dependencias del Backend (Maven)
+└── README.md                     #  Este archivo
+```
+
+**Nota importante**: El backend **NO** está en una carpeta separada. Los archivos del backend (src/, pom.xml, Dockerfile) están en la raíz del proyecto, mientras que el frontend está en la carpeta `frontend/`.
 
 ---
 
