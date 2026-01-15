@@ -1,0 +1,112 @@
+-- MySQL dump 10.13  Distrib 8.4.7, for Linux (x86_64)
+--
+-- Host: localhost    Database: school_db
+-- ------------------------------------------------------
+-- Server version	8.4.7
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `alumnos`
+--
+
+DROP TABLE IF EXISTS `alumnos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alumnos` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `apellido` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKrrq96s55g45kywh0ypeed2u1v` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alumnos`
+--
+
+LOCK TABLES `alumnos` WRITE;
+/*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
+INSERT INTO `alumnos` VALUES (1,'Ortega Cotes','simonortega@outlook.com','2026-01-15','Jose Simon'),(2,'Perez','juan.perez@test.com','1998-06-09','Juan'),(3,'Garcia','mariagarcia@gmail.com','1999-08-20','Maria'),(4,'Rodríguez','carlos.rodriguez@example.com','2001-03-10','Carlos'),(5,'Torres','luis.torres@example.com','1998-07-30','Luis');
+/*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `materia`
+--
+
+DROP TABLE IF EXISTS `materia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `materia` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(255) DEFAULT NULL,
+  `creditos` int DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `materia`
+--
+
+LOCK TABLES `materia` WRITE;
+/*!40000 ALTER TABLE `materia` DISABLE KEYS */;
+INSERT INTO `materia` VALUES (2,'MAT101',4,'Matemáticas'),(3,'PRG101',5,'Programación'),(4,'FIS101',4,'Física'),(5,'ING101',3,'Inglés'),(6,'BDD101',5,'Base de Datos');
+/*!40000 ALTER TABLE `materia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `nota`
+--
+
+DROP TABLE IF EXISTS `nota`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `nota` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `fecha_registro` date DEFAULT NULL,
+  `valor` double DEFAULT NULL,
+  `alumno_id` bigint NOT NULL,
+  `materia_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKebrdg03kc52gie2awy8debmhe` (`alumno_id`),
+  KEY `FKku2j7w49m37wgr827n4i80wvp` (`materia_id`),
+  CONSTRAINT `FKebrdg03kc52gie2awy8debmhe` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`),
+  CONSTRAINT `FKku2j7w49m37wgr827n4i80wvp` FOREIGN KEY (`materia_id`) REFERENCES `materia` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nota`
+--
+
+LOCK TABLES `nota` WRITE;
+/*!40000 ALTER TABLE `nota` DISABLE KEYS */;
+INSERT INTO `nota` VALUES (2,'2026-01-15',4.6,1,2),(3,'2026-01-15',2,1,4),(4,'2026-01-15',5,1,6),(5,'2026-01-15',3.1,2,3),(6,'2026-01-15',4,2,5),(7,'2026-01-15',4.2,3,3),(8,'2026-01-15',2.4,4,6),(9,'2026-01-15',5,4,3),(10,'2026-01-15',3.7,4,2),(11,'2026-01-15',0,5,5),(12,'2026-01-15',2.9,5,3),(13,'2026-01-15',4.8,5,4);
+/*!40000 ALTER TABLE `nota` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-15  2:54:18
