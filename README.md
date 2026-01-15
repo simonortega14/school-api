@@ -1,122 +1,212 @@
-# School API – Backend
+# Sistema de Gestión Escolar - Full Stack
 
-Este proyecto corresponde al backend de una prueba técnica Full Stack.  
-Consiste en una API REST para gestionar alumnos, materias y notas, desarrollada con Java y Spring Boot.  
-La API permite crear, consultar, actualizar y eliminar alumnos y materias, así como registrar y consultar notas por alumno.
+Aplicación web Full Stack para gestionar alumnos, materias y notas académicas.
 
 ---
 
-## Tecnologías usadas
+## 📋 Tecnologías
 
+### Backend
 - Java 17
-- Spring Boot 3.5.x
+- Spring Boot 3.5.4
 - Spring Data JPA
 - Maven
-- MySQL 8 (Docker)
+- MySQL 8.4
+
+### Frontend
+- React
+- TypeScript
+- Vite
+
+### Infraestructura
+- Docker & Docker Compose
+- MySQL (contenedor)
 
 ---
 
-## Estructura del proyecto
+## Arquitectura
 
-El proyecto sigue una estructura clásica por capas:
+El proyecto está dividido en tres servicios principales:
 
-- **model** → Entidades JPA
-- **repository** → Acceso a datos
-- **service** → Lógica de negocio
-- **controller** → Endpoints REST
+1. **MySQL** - Base de datos (puerto 3306)
+2. **Backend** - API REST Spring Boot (puerto 8080)
+3. **Frontend** - Aplicación React (puerto 80)
 
----
-
-## Base de datos (MySQL con Docker)
-
-La base de datos se ejecuta utilizando Docker.
-
-### Levantar MySQL con Docker
-```bash
-docker run --name school_mysql \
-  -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=school_db \
-  -e MYSQL_USER=school_user \
-  -e MYSQL_PASSWORD=school_pass \
-  -p 3306:3306 \
-  -d mysql:8
-```
-
-Verificar que el contenedor esté corriendo:
-```bash
-docker ps
-```
+Todos los servicios se comunican a través de una red Docker (`school_network`).
 
 ---
 
 ## Variables de entorno
 
-La aplicación se conecta a la base de datos utilizando variables de entorno.
+### Backend
+| Variable | Valor | Descripción |
+|----------|-------|-------------|
+| `DB_URI` | `jdbc:mysql://mysql:3306/school_db` | URL de conexión a MySQL |
+| `DB_USER` | `school_user` | Usuario de la base de datos |
+| `DB_PASSWORD` | `school_pass` | Contraseña de la base de datos |
+| `DB_DRIVER` | `com.mysql.cj.jdbc.Driver` | Driver JDBC de MySQL |
 
-### Configuración en Windows (PowerShell)
-```powershell
-$env:DB_URI="jdbc:mysql://localhost:3306/school_db"
-$env:DB_USER="school_user"
-$env:DB_PASSWORD="school_pass"
-$env:DB_DRIVER="com.mysql.cj.jdbc.Driver"
-```
+### Frontend
+| Variable | Valor | Descripción |
+|----------|-------|-------------|
+| `VITE_API_URL` | `/api` | URL base del backend |
+
+**Nota**: Estas variables ya están configuradas en el `docker-compose.yml` y no necesitan configuración manual.
 
 ---
 
-## Ejecutar la aplicación
+## Instrucciones de ejecución
 
-Desde la raíz del proyecto, ejecutar:
+### Requisitos previos
+- Docker Desktop instalado
+- Docker Compose instalado
+- Puertos 80, 3306 y 8080 disponibles
+
+### Pasos para ejecutar
+
+1. **Clonar el repositorio**
 ```bash
-mvn spring-boot:run
+   git clone 
+   cd 
 ```
 
-La API quedará disponible en:
+2. **Levantar todos los servicios**
+```bash
+   docker-compose up --build
 ```
-http://localhost:8080
+   
+3. **Esperar a que los servicios estén listos**  
+   Observar los logs hasta ver:
+   - `MySQL: ready for connections`
+   - `Started SchoolApiApplication`
+   - Frontend accesible
+
+4. **Restaurar datos de prueba**  
+   En otra terminal, ejecutar:
+```bash
+   docker exec -i school_mysql mysql -u school_user -pschool_pass school_db < db/school_db.dump
 ```
+
+5. **Acceder a la aplicación**
+   - **Frontend**: http://localhost
 
 ---
 
-## Endpoints principales
+## 🔌 Endpoints de la API
 
 ### Alumnos
-
-- `POST /api/alumnos`
-- `GET /api/alumnos`
-- `GET /api/alumnos/{id}`
-- `PUT /api/alumnos/{id}`
-- `DELETE /api/alumnos/{id}`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/alumnos` | Crear alumno |
+| GET | `/api/alumnos` | Listar todos los alumnos |
+| GET | `/api/alumnos/{id}` | Consultar alumno por ID |
+| PUT | `/api/alumnos/{id}` | Actualizar alumno |
+| DELETE | `/api/alumnos/{id}` | Eliminar alumno |
 
 ### Materias
-
-- `POST /api/materias`
-- `GET /api/materias`
-- `GET /api/materias/{id}`
-- `PUT /api/materias/{id}`
-- `DELETE /api/materias/{id}`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/materias` | Crear materia |
+| GET | `/api/materias` | Listar todas las materias |
+| GET | `/api/materias/{id}` | Consultar materia por ID |
+| PUT | `/api/materias/{id}` | Actualizar materia |
+| DELETE | `/api/materias/{id}` | Eliminar materia |
 
 ### Notas
-
-- `POST /api/notas`
-- `GET /api/notas/alumno/{alumnoId}`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/notas` | Registrar nota |
+| GET | `/api/notas/alumno/{alumnoId}` | Listar notas por alumno |
 
 ---
 
 ## Datos de prueba
 
-Se incluyen datos de prueba para facilitar la validación del sistema.  
-Los datos se encuentran en formato `.dump` dentro del siguiente directorio:
-```
-/db/school_db.dump
-```
+El archivo `db/school_db.dump` contiene datos iniciales para probar la aplicación:
+- Varios alumnos registrados
+- Múltiples materias
+- Notas asociadas a alumnos y materias
 
-El archivo contiene registros de alumnos, materias y notas ya relacionadas.
+Estos datos se restauran automáticamente siguiendo el paso 4 de las instrucciones.
 
 ---
 
-## Notas finales
+## Detener la aplicación
 
-- El backend funciona correctamente de forma local
-- La base de datos se ejecuta obligatoriamente con Docker
-- Las credenciales se manejan mediante variables de entorno
-- El proyecto no contiene referencias a la empresa evaluadora
+Para detener todos los servicios:
+```bash
+docker-compose down
+```
+
+Para detener y eliminar volúmenes (base de datos):
+```bash
+docker-compose down -v
+```
+
+---
+
+## Verificación del sistema
+
+### Verificar que los contenedores estén corriendo
+```bash
+docker ps
+```
+
+Deberías ver 3 contenedores activos:
+- `school_mysql`
+- `school_backend`
+- `school_frontend`
+
+### Probar el backend directamente
+```bash
+curl http://localhost:8080/api/alumnos
+```
+
+### Verificar logs
+```bash
+# Backend
+docker logs school_backend
+
+# Frontend
+docker logs school_frontend
+
+# MySQL
+docker logs school_mysql
+```
+
+---
+
+## 🔧 Solución de problemas
+
+### El backend no se conecta a MySQL
+- Verificar que MySQL esté completamente iniciado (healthcheck)
+- Revisar logs: `docker logs school_mysql`
+
+### Puerto en uso
+Si los puertos están ocupados, modificar en `docker-compose.yml`:
+```yaml
+ports:
+  - "NUEVO_PUERTO:PUERTO_CONTENEDOR"
+```
+
+### Reconstruir desde cero
+```bash
+docker-compose down -v
+docker-compose build --no-cache
+docker-compose up
+```
+
+---
+
+## Notas adicionales
+
+- El proyecto utiliza Docker Compose para orquestar todos los servicios
+- La base de datos persiste en un volumen Docker (`mysql_data`)
+- El backend espera a que MySQL esté saludable antes de iniciar
+- Las credenciales están configuradas solo para desarrollo/pruebas
+
+---
+
+## Autor
+
+José Simón Ortega Cotes - Desarrollado como prueba técnica para posición de Desarrollador Full Stack Junior.
