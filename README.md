@@ -4,7 +4,7 @@ Aplicación web Full Stack para gestionar alumnos, materias y notas académicas.
 
 ---
 
-## 📋 Tecnologías
+## Tecnologías
 
 ### Backend
 - Java 17
@@ -92,7 +92,7 @@ Todos los servicios se comunican a través de una red Docker (`school_network`).
 
 ---
 
-## 🔌 Endpoints de la API
+## Endpoints de la API
 
 ### Alumnos
 | Método | Endpoint | Descripción |
